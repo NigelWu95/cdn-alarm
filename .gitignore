@@ -1,0 +1,9 @@
+# IntelliJ
+out/
+.idea/*
+
+meipian-alarm.jar
+
+.qiniu.properties
+
+target/*
