@@ -1,5 +1,8 @@
 package com.qiniu.nigel.email;
 
+import com.qiniu.nigel.Config;
+
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -12,14 +15,28 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
+
+    static Config config;
     //发件人地址
-    public static String senderAddress = "";
+    public static String senderAddress;
     //收件人地址
-    public static String recipientAddress = "";
+    public static String recipientAddress;
     //发件人账户名
-    public static String senderAccount = "";
+    public static String senderAccount;
     //发件人账户密码
-    public static String senderPassword = "";
+    public static String senderPassword;
+
+    static {
+        try {
+            config = new Config("qiniu.properties");
+            senderAddress = config.getParamValue("sender");
+            recipientAddress = config.getParamValue("recipient");
+            senderAccount = config.getParamValue("email-account");
+            senderPassword = config.getParamValue("email-password");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         //1、连接邮件服务器的参数配置
