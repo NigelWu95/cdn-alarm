@@ -2,8 +2,11 @@ package com.qiniu.nigel.email;
 
 import com.qiniu.nigel.Config;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -26,9 +29,23 @@ public class EmailSender {
     //发件人账户密码
     public static String senderPassword;
 
-    static {
+    public static void main(String[] args) throws Exception {
+        List<String> configFiles = new ArrayList<String>(){{
+            add("resources/qiniu.properties");
+            add("resources/.qiniu.properties");
+        }};
+        String configFilePath = null;
+        for (int i = configFiles.size() - 1; i >= 0; i--) {
+            File file = new File(configFiles.get(i));
+            if (file.exists()) {
+                configFilePath = configFiles.get(i);
+                break;
+            }
+        }
+        if (configFilePath == null) throw new IOException("there is no config file detected.");
+
         try {
-            config = new Config("qiniu.properties");
+            config = new Config(configFilePath);
             senderAddress = config.getParamValue("sender");
             recipientAddress = config.getParamValue("recipient");
             senderAccount = config.getParamValue("email-account");
@@ -36,9 +53,7 @@ public class EmailSender {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    public static void main(String[] args) throws Exception {
         //1、连接邮件服务器的参数配置
         Properties props = new Properties();
         //设置用户的认证方式
