@@ -1,12 +1,6 @@
 package com.qiniu.nigel.email;
 
-import com.qiniu.nigel.Config;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -19,41 +13,25 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
 
-    static Config config;
+    //邮件 smtp 服务域名
+    private String SMTPHost;
     //发件人地址
-    public static String senderAddress;
-    //收件人地址
-    public static String recipientAddress;
+    private String senderAddress;
     //发件人账户名
-    public static String senderAccount;
+    private String senderAccount;
     //发件人账户密码
-    public static String senderPassword;
+    private String senderPassword;
+    //收件人地址
+    private String recipientAddress;
 
-    public static void main(String[] args) throws Exception {
-        List<String> configFiles = new ArrayList<String>(){{
-            add("resources/qiniu.properties");
-            add("resources/.qiniu.properties");
-        }};
-        String configFilePath = null;
-        for (int i = configFiles.size() - 1; i >= 0; i--) {
-            File file = new File(configFiles.get(i));
-            if (file.exists()) {
-                configFilePath = configFiles.get(i);
-                break;
-            }
-        }
-        if (configFilePath == null) throw new IOException("there is no config file detected.");
+    public EmailSender(String SMTPHost, String senderAddress, String senderAccount, String senderPassword) {
+        this.SMTPHost = SMTPHost;
+        this.senderAddress = senderAddress;
+        this.senderAccount = senderAccount;
+        this.senderPassword = senderPassword;
+    }
 
-        try {
-            config = new Config(configFilePath);
-            senderAddress = config.getParamValue("sender");
-            recipientAddress = config.getParamValue("recipient");
-            senderAccount = config.getParamValue("email-account");
-            senderPassword = config.getParamValue("email-password");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void main(String[] args) throws Exception {
         //1、连接邮件服务器的参数配置
         Properties props = new Properties();
         //设置用户的认证方式
@@ -61,7 +39,8 @@ public class EmailSender {
         //设置传输协议
         props.setProperty("mail.transport.protocol", "smtp");
         //设置发件人的SMTP服务器地址
-        props.setProperty("mail.smtp.host", "smtp.exmail.qq.com");
+        //"smtp.exmail.qq.com"
+        props.setProperty("mail.smtp.host", SMTPHost);
         //2、创建定义整个应用程序所需的环境信息的 Session 对象
         Session session = Session.getInstance(props);
         //设置调试信息在控制台打印出来
@@ -89,7 +68,7 @@ public class EmailSender {
      * @throws MessagingException
      * @throws AddressException
      */
-    public static MimeMessage getMimeMessage(Session session) throws Exception{
+    public MimeMessage getMimeMessage(Session session) throws Exception{
         //创建一封邮件的实例对象
         MimeMessage msg = new MimeMessage(session);
         //设置发件人地址
