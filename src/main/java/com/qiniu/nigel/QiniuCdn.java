@@ -10,16 +10,6 @@ import java.io.IOException;
 
 public class QiniuCdn {
 
-    public static void main(String[] args) throws IOException {
-
-        Config config = new Config("qiniu.properties");
-        String accessKey = config.getParamValue("ak");
-        String secretKey = config.getParamValue("sk");
-        Auth auth = Auth.create(accessKey, secretKey);
-        QiniuCdn qiniuCdn = new QiniuCdn();
-        qiniuCdn.queryCdnAmounts(auth);
-    }
-
     public void queryCdnAmounts(Auth auth) {
 
         String url = "http://fusion.qiniuapi.com/refresh/user/surplus";

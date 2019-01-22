@@ -60,9 +60,9 @@ public class EmailSender {
          * MimeMessage.RecipientType.BCC：密送
          */
         //设置邮件主题s
-        message.setSubject("邮件主题","UTF-8");
+        message.setSubject(subject,"UTF-8");
         //设置邮件正文
-        message.setContent("简单的纯文本邮件！", "text/html;charset=UTF-8");
+        message.setContent(content, "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
         message.setSentDate(new Date());
         //根据session对象获取邮件传输对象Transport
