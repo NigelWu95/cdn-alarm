@@ -1,33 +1,29 @@
 package com.qiniu.nigel;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Client;
 import com.qiniu.http.Response;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 
-import java.io.IOException;
-
 public class QiniuCdn {
 
-    public void queryCdnAmounts(Auth auth) {
+    private Client client;
 
+    public QiniuCdn() {
+        client = new Client();
+    }
+
+    public String queryCdnAmounts(Auth auth) throws QiniuException {
         String url = "http://fusion.qiniuapi.com/refresh/user/surplus";
         String authorization = "QBox " + auth.signRequest(url, null, Client.FormMime);
         StringMap headers = new StringMap().put("Authorization", authorization);
-        System.out.println(headers.formString());
-        Client client = new Client();
-        Response response = null;
-
-        try {
-            response = client.get(url, headers);
-            System.out.println(response.bodyString());
-        } catch (QiniuException e) {
-            e.printStackTrace();
-        } finally {
-            if (response != null) {
-                response.close();
-            }
-        }
+        Response response = client.get(url, headers);
+        JsonObject jsonObject = new JsonParser().parse(response.bodyString()).getAsJsonObject();
+        System.out.println(jsonObject.toString());
+//        return jsonObject.get("").getAsInt();
+        return "";
     }
 }

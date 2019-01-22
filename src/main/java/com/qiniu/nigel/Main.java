@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         List<String> configFiles = new ArrayList<String>(){{
-            add("resources/qiniu.properties");
-            add("resources/.qiniu.properties");
+            add("qiniu.properties");
+            add(".qiniu.properties");
         }};
         String configFilePath = null;
         for (int i = configFiles.size() - 1; i >= 0; i--) {
