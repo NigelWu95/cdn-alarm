@@ -1,6 +1,6 @@
 package com.qiniu.nigel.cdn;
 
-public class Quota {
+public class QuotaAndSurplus {
 
     public int urlQuotaDay;
     public int urlSurplusDay;

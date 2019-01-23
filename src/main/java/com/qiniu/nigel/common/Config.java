@@ -1,4 +1,4 @@
-package com.qiniu.nigel;
+package com.qiniu.nigel.common;
 
 import java.io.*;
 import java.util.Properties;

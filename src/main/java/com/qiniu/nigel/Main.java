@@ -1,7 +1,8 @@
 package com.qiniu.nigel;
 
-import com.qiniu.nigel.cdn.Quota;
+import com.qiniu.nigel.cdn.QuotaAndSurplus;
 import com.qiniu.nigel.cdn.Refresh;
+import com.qiniu.nigel.common.Config;
 import com.qiniu.nigel.email.EmailSender;
 import com.qiniu.util.Auth;
 
@@ -32,17 +33,18 @@ public class Main {
         String secretKey = config.getParamValue("sk");
         Auth auth = Auth.create(accessKey, secretKey);
         Refresh refresh = new Refresh(null, auth);
-        Quota quota = refresh.queryQuotaAndSurplus();
-//        quota.
+        QuotaAndSurplus quotaAndSurplus = refresh.queryQuotaAndSurplus();
+        int urlSurplusDay = quotaAndSurplus.urlSurplusDay;
+        if (urlSurplusDay < 1000) {
+            String senderAddress = config.getParamValue("sender");
+            String senderAccount = config.getParamValue("email-account");
+            String senderPassword = config.getParamValue("email-password");
+            String SMTPHost = config.getParamValue("smtp-host");
+            String recipientAddress = config.getParamValue("recipient-address");
 
-        String senderAddress = config.getParamValue("sender");
-        String senderAccount = config.getParamValue("email-account");
-        String senderPassword = config.getParamValue("email-password");
-        String SMTPHost = config.getParamValue("smtp-host");
-        String recipientAddress = config.getParamValue("recipient-address");
-
-        EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
-        emailSender.addRecipient(recipientAddress);
-        emailSender.emailText("测试", "简单文本邮件");
+            EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
+            emailSender.addRecipient(recipientAddress);
+            emailSender.emailText("测试", "简单文本邮件");
+        }
     }
 }

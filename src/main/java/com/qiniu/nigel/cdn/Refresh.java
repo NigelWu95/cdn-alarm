@@ -14,18 +14,18 @@ public class Refresh {
 
     private Client client;
     private Auth auth;
-    private Quota quota;
+    private QuotaAndSurplus quotaAndSurplus;
 
     public Refresh(Configuration cfg, Auth auth) {
         this.client = cfg == null ? new Client() : new Client(cfg);
         this.auth = auth;
     }
 
-    public Quota getQuota() {
-        return quota;
+    public QuotaAndSurplus getQuotaAndSurplus() {
+        return quotaAndSurplus;
     }
 
-    public Quota queryQuotaAndSurplus() throws QiniuException {
+    public QuotaAndSurplus queryQuotaAndSurplus() throws QiniuException {
         String url = "http://fusion.qiniuapi.com/refresh/user/surplus";
         String authorization = "QBox " + auth.signRequest(url, null, Client.FormMime);
         StringMap headers = new StringMap().put("Authorization", authorization);
@@ -36,9 +36,9 @@ public class Refresh {
         if (code != 200 || !"success".equals(error)) {
             throw new QiniuException(response);
         } else {
-            quota = new Gson().fromJson(jsonObject, Quota.class);
+            quotaAndSurplus = new Gson().fromJson(jsonObject, QuotaAndSurplus.class);
             response.close();
-            return quota;
+            return quotaAndSurplus;
         }
     }
 }
