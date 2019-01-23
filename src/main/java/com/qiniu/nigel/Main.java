@@ -4,6 +4,7 @@ import com.qiniu.nigel.cdn.QuotaAndSurplus;
 import com.qiniu.nigel.cdn.Refresh;
 import com.qiniu.nigel.common.Config;
 import com.qiniu.nigel.email.EmailSender;
+import com.qiniu.storage.Configuration;
 import com.qiniu.util.Auth;
 
 import java.io.File;
@@ -29,22 +30,52 @@ public class Main {
         }
         if (configFilePath == null) throw new IOException("there is no config file detected.");
         Config config = new Config(configFilePath);
+
+        String senderAddress = config.getParamValue("sender");
+        String senderAccount = config.getParamValue("email-account");
+        String senderPassword = config.getParamValue("email-password");
+        String SMTPHost = config.getParamValue("smtp-host");
+        String recipientAddress = config.getParamValue("recipient-address");
+        EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
+
         String accessKey = config.getParamValue("ak");
         String secretKey = config.getParamValue("sk");
         Auth auth = Auth.create(accessKey, secretKey);
-        Refresh refresh = new Refresh(null, auth);
+        Refresh refresh = new Refresh(new Configuration(), auth);
         QuotaAndSurplus quotaAndSurplus = refresh.queryQuotaAndSurplus();
         int urlSurplusDay = quotaAndSurplus.urlSurplusDay;
-        if (urlSurplusDay < 1000) {
-            String senderAddress = config.getParamValue("sender");
-            String senderAccount = config.getParamValue("email-account");
-            String senderPassword = config.getParamValue("email-password");
-            String SMTPHost = config.getParamValue("smtp-host");
-            String recipientAddress = config.getParamValue("recipient-address");
+        // 告警时间单位间隔
+        int seconds = 60 * 1000;
+        // 告警时间间隔初始值，间隔 10 分钟查询一次
+        int interval = 10 * seconds;
+        int count = 0;
 
-            EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
-            emailSender.addRecipient(recipientAddress);
-            emailSender.emailText("测试", "简单文本邮件");
+        while (true) {
+            if (urlSurplusDay < 100) {
+                emailSender.addRecipient(recipientAddress);
+                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
+                count++;
+                if (count > 0) interval = seconds;
+            } else if (urlSurplusDay < 500) {
+                emailSender.addRecipient(recipientAddress);
+                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
+                count++;
+                if (count > 0) interval = 2 * seconds;
+            } else if (urlSurplusDay < 1000) {
+                emailSender.addRecipient(recipientAddress);
+                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
+                count++;
+                if (count > 0) interval = 3 * seconds;
+            } else if (urlSurplusDay < 10000 ) {
+                interval = 5 * seconds;
+                count = 0;
+            } else {
+                count = 0;
+            }
+            Thread.sleep(interval);
+            quotaAndSurplus = refresh.queryQuotaAndSurplus();
+            urlSurplusDay = quotaAndSurplus.urlSurplusDay;
         }
+
     }
 }
