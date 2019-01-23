@@ -45,6 +45,10 @@ public class EmailSender {
     }
 
     public void addRecipient(String emailAddress) throws MessagingException {
+        // 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
+        // MimeMessage.RecipientType.TO
+        // MimeMessage.RecipientType.CC
+        // MimeMessage.RecipientType.BCC
         message.addRecipient(RecipientType.TO, new InternetAddress(emailAddress));
     }
 
@@ -55,13 +59,7 @@ public class EmailSender {
         message.addHeader("Mailer","Foxmail for Mac version 1.2.14017");
         //设置发件人地址
         message.setFrom(new InternetAddress(senderAddress));
-        /**
-         * 设置收件人地址（可以增加多个收件人、抄送、密送），即下面这一行代码书写多行
-         * MimeMessage.RecipientType.TO:发送
-         * MimeMessage.RecipientType.CC：抄送
-         * MimeMessage.RecipientType.BCC：密送
-         */
-        //设置邮件主题s
+        //设置邮件主题
         message.setSubject("<h2>" + subject + "</h2></br>","UTF-8");
         //设置邮件正文
         message.setContent("<p>" + content + "</p>", "text/html;charset=UTF-8");
