@@ -47,28 +47,43 @@ public class Main {
         // 告警时间单位间隔
         int seconds = 60 * 1000;
         // 告警时间间隔初始值，间隔 10 分钟查询一次
-        int interval = 10 * seconds;
+        int interval = 30 * seconds;
         int count = 0;
 
         while (true) {
-            if (urlSurplusDay < 100) {
-                emailSender.addRecipient(recipientAddress);
-                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
-                count++;
-                if (count > 0) interval = seconds;
-            } else if (urlSurplusDay < 500) {
-                emailSender.addRecipient(recipientAddress);
-                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
-                count++;
-                if (count > 0) interval = 2 * seconds;
-            } else if (urlSurplusDay < 1000) {
-                emailSender.addRecipient(recipientAddress);
-                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
-                count++;
-                if (count > 0) interval = 3 * seconds;
-            } else if (urlSurplusDay < 10000 ) {
-                interval = 5 * seconds;
+            if (urlSurplusDay == 0) {
                 count = 0;
+                interval = 60 * seconds;
+                emailSender.addRecipient(recipientAddress);
+                emailSender.addRecipient("tswork@qiniu.com");
+                emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+            } else if (urlSurplusDay < 100) {
+                count++;
+                interval = seconds;
+                if (count <= 5 || count % 30 == 0) {
+                    emailSender.addRecipient(recipientAddress);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                }
+            } else if (urlSurplusDay < 500) {
+                count++;
+                interval = 2 * seconds;
+                if (count <= 5 || count % 15 == 0) {
+                    emailSender.addRecipient(recipientAddress);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                }
+            } else if (urlSurplusDay < 1000) {
+                count++;
+                interval = 3 * seconds;
+                if (count <= 5 || count % 10 == 0) {
+                    emailSender.addRecipient(recipientAddress);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                }
+            } else if (urlSurplusDay < 10000 ) {
+                count = 0;
+                interval = 5 * seconds;
+            } else if (urlSurplusDay < 20000 ) {
+                count = 0;
+                interval = 10 * seconds;
             } else {
                 count = 0;
             }
