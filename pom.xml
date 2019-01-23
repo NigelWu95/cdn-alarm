@@ -47,7 +47,7 @@
                     <!--<descriptor>resources/assembly.xml</descriptor>-->
                     <archive>
                         <manifest>
-                            <mainClass>com.qiniu.nigel.QiniuCdn</mainClass>
+                            <mainClass>com.qiniu.nigel.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

@@ -1,5 +1,7 @@
 package com.qiniu.nigel;
 
+import com.qiniu.nigel.cdn.Quota;
+import com.qiniu.nigel.cdn.Refresh;
 import com.qiniu.nigel.email.EmailSender;
 import com.qiniu.util.Auth;
 
@@ -29,8 +31,9 @@ public class Main {
         String accessKey = config.getParamValue("ak");
         String secretKey = config.getParamValue("sk");
         Auth auth = Auth.create(accessKey, secretKey);
-        QiniuCdn qiniuCdn = new QiniuCdn();
-        qiniuCdn.queryCdnAmounts(auth);
+        Refresh refresh = new Refresh(null, auth);
+        Quota quota = refresh.queryQuotaAndSurplus();
+//        quota.
 
         String senderAddress = config.getParamValue("sender");
         String senderAccount = config.getParamValue("email-account");

@@ -17,7 +17,12 @@ public class Refresh {
     private Quota quota;
 
     public Refresh(Configuration cfg, Auth auth) {
-        client = new Client();
+        this.client = cfg == null ? new Client() : new Client(cfg);
+        this.auth = auth;
+    }
+
+    public Quota getQuota() {
+        return quota;
     }
 
     public Quota queryQuotaAndSurplus() throws QiniuException {
@@ -31,7 +36,9 @@ public class Refresh {
         if (code != 200 || !"success".equals(error)) {
             throw new QiniuException(response);
         } else {
-            return new Gson().fromJson(jsonObject, Quota.class);
+            quota = new Gson().fromJson(jsonObject, Quota.class);
+            response.close();
+            return quota;
         }
     }
 }
