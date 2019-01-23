@@ -1,7 +1,8 @@
 package com.qiniu.nigel.email;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.mail.Message.*;
 import javax.mail.MessagingException;
@@ -64,7 +65,8 @@ public class EmailSender {
         //设置邮件正文
         message.setContent(content, "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
-        message.setSentDate(new Date());
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+        message.setSentDate(calendar.getTime());
         //根据session对象获取邮件传输对象Transport
         Transport transport = session.getTransport();
         //设置发件人的账户名和密码
