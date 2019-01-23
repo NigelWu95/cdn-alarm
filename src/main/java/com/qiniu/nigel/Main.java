@@ -1,9 +1,13 @@
 package com.qiniu.nigel;
 
+import com.qiniu.http.Client;
 import com.qiniu.nigel.cdn.QuotaAndSurplus;
 import com.qiniu.nigel.cdn.Refresh;
 import com.qiniu.nigel.common.Config;
 import com.qiniu.nigel.email.EmailSender;
+import com.qiniu.storage.BucketManager;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.model.AclType;
 import com.qiniu.util.Auth;
 
 import java.io.File;
@@ -46,5 +50,8 @@ public class Main {
             emailSender.addRecipient(recipientAddress);
             emailSender.emailText("测试", "简单文本邮件");
         }
+
+//        BucketManager bucketManager = new BucketManager(auth, new Configuration());
+//        bucketManager.setBucketAcl("ipcamera", AclType.PUBLIC);
     }
 }

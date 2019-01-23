@@ -51,6 +51,8 @@ public class EmailSender {
     public void emailText(String subject, String content) throws MessagingException {
         //设置调试信息在控制台打印出来
         session.setDebug(true);
+        //防止成为垃圾邮件，披上outlook的马甲
+        message.addHeader("Mailer","Foxmail for Mac version 1.2.14017");
         //设置发件人地址
         message.setFrom(new InternetAddress(senderAddress));
         /**
@@ -60,9 +62,9 @@ public class EmailSender {
          * MimeMessage.RecipientType.BCC：密送
          */
         //设置邮件主题s
-        message.setSubject(subject,"UTF-8");
+        message.setSubject("<h2>" + subject + "</h2></br>","UTF-8");
         //设置邮件正文
-        message.setContent(content, "text/html;charset=UTF-8");
+        message.setContent("<p>" + content + "</p>", "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
         message.setSentDate(new Date());
         //根据session对象获取邮件传输对象Transport
