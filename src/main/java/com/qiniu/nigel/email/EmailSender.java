@@ -60,9 +60,9 @@ public class EmailSender {
         //设置发件人地址
         message.setFrom(new InternetAddress(senderAddress));
         //设置邮件主题
-        message.setSubject("<h2>" + subject + "</h2></br>","UTF-8");
+        message.setSubject(subject,"UTF-8");
         //设置邮件正文
-        message.setContent("<p>" + content + "</p>", "text/html;charset=UTF-8");
+        message.setContent(content, "text/html;charset=UTF-8");
         //设置邮件的发送时间,默认立即发送
         message.setSentDate(new Date());
         //根据session对象获取邮件传输对象Transport
