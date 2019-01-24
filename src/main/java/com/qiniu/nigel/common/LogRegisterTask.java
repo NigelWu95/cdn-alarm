@@ -8,12 +8,10 @@ import java.io.IOException;
 public class LogRegisterTask extends java.util.TimerTask {
 
     private EmailSender emailSender;
-    private String path;
     private File file;
 
     public LogRegisterTask(EmailSender emailSender, String path) throws IOException {
         this.emailSender = emailSender;
-        this.path = path;
         this.file = new File(path);
         boolean success = false;
         while (!file.exists() && !success) {
