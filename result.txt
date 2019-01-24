@@ -1,0 +1,53 @@
+DEBUG: setDebug: JavaMail version 1.5.6
+DEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Oracle]
+DEBUG SMTP: useEhlo true, useAuth true
+DEBUG SMTP: trying to connect to host "smtp.exmail.qq.com", port 25, isSSL false
+220 smtp.qq.com Esmtp QQ Mail Server
+DEBUG SMTP: connected to host "smtp.exmail.qq.com", port: 25
+
+EHLO 100.100.32.56
+250-smtp.qq.com
+250-PIPELINING
+250-SIZE 73400320
+250-STARTTLS
+250-AUTH LOGIN PLAIN
+250-AUTH=LOGIN
+250-MAILCOMPRESS
+250 8BITMIME
+DEBUG SMTP: Found extension "PIPELINING", arg ""
+DEBUG SMTP: Found extension "SIZE", arg "73400320"
+DEBUG SMTP: Found extension "STARTTLS", arg ""
+DEBUG SMTP: Found extension "AUTH", arg "LOGIN PLAIN"
+DEBUG SMTP: Found extension "AUTH=LOGIN", arg ""
+DEBUG SMTP: Found extension "MAILCOMPRESS", arg ""
+DEBUG SMTP: Found extension "8BITMIME", arg ""
+DEBUG SMTP: protocolConnect login, host=smtp.exmail.qq.com, user=wubingheng@qiniu.com, password=<non-null>
+DEBUG SMTP: Attempt to authenticate using mechanisms: LOGIN PLAIN DIGEST-MD5 NTLM XOAUTH2 
+DEBUG SMTP: Using mechanism LOGIN
+DEBUG SMTP: AUTH LOGIN command trace suppressed
+DEBUG SMTP: AUTH LOGIN succeeded
+DEBUG SMTP: use8bit false
+MAIL FROM:<wubingheng@qiniu.com>
+250 Ok
+RCPT TO:<wubinghengajw@outlook.com>
+250 Ok
+DEBUG SMTP: Verified Addresses
+DEBUG SMTP:   wubinghengajw@outlook.com
+DATA
+354 End data with <CR><LF>.<CR><LF>
+Date: Thu, 24 Jan 2019 10:18:10 +0800 (CST)
+From: wubingheng@qiniu.com
+To: wubinghengajw@outlook.com
+Message-ID: <999609945.0.1548296291814@[100.100.32.56]>
+Subject: =?UTF-8?B?5LiD54mbIENETiDliLfmlrDpop3luqbpooToraY=?=
+MIME-Version: 1.0
+Content-Type: text/html;charset=UTF-8
+Content-Transfer-Encoding: base64
+Mailer: Foxmail for Mac version 1.2.14017
+
+576O56+HIFVSTCDliLfmlrDpop3luqbliankvZnvvJo1MDA=
+.
+250 Ok: queued as 
+DEBUG SMTP: message successfully delivered to mail server
+QUIT
+221 Bye

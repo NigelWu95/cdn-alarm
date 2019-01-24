@@ -37,6 +37,8 @@ public class Main {
         String SMTPHost = config.getParamValue("smtp-host");
         String recipientAddress = config.getParamValue("recipient-address");
         EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
+        File file = new File("log.txt");
+        emailSender.setLogFile(file);
 
         String accessKey = config.getParamValue("ak");
         String secretKey = config.getParamValue("sk");

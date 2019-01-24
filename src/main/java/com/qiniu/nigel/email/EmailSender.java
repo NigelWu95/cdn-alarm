@@ -1,5 +1,6 @@
 package com.qiniu.nigel.email;
 
+import java.io.*;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -24,6 +25,7 @@ public class EmailSender {
 
     private Session session;
     private MimeMessage message;
+    private File logFile;
 
     public EmailSender(String SMTPHost, String senderAddress, String senderAccount, String senderPassword) {
         //邮件 smtp 服务域名
@@ -53,10 +55,16 @@ public class EmailSender {
         message.addRecipient(RecipientType.TO, new InternetAddress(emailAddress));
     }
 
-    public void emailText(String subject, String content) throws MessagingException {
-        //设置调试信息在控制台打印出来
+    public void setLogFile(File logFile) {
+        this.logFile = logFile;
+    }
+
+    public void emailText(String subject, String content) throws MessagingException, FileNotFoundException {
+        //设置输出调试信息
+        PrintStream printStream = new PrintStream(logFile);
+        session.setDebugOut(printStream);
         session.setDebug(true);
-        //防止成为垃圾邮件，披上outlook的马甲
+        //防止成为垃圾邮件
         message.addHeader("Mailer","Foxmail for Mac version 1.2.14017");
         //设置发件人地址
         message.setFrom(new InternetAddress(senderAddress));
@@ -75,8 +83,7 @@ public class EmailSender {
         transport.sendMessage(message, message.getAllRecipients());
         //如果只想发送给指定的人，可以如下写法
         //transport.sendMessage(msg, new Address[]{new InternetAddress("xxx@qq.com")});
-
-        //5、关闭邮件连接
+        //关闭邮件连接
         transport.close();
     }
 }
