@@ -3,7 +3,7 @@ package com.qiniu.nigel;
 import com.qiniu.nigel.cdn.QuotaAndSurplus;
 import com.qiniu.nigel.cdn.Refresh;
 import com.qiniu.nigel.common.Config;
-import com.qiniu.nigel.common.LogCleanTask;
+import com.qiniu.nigel.common.LogRegisterTask;
 import com.qiniu.nigel.email.EmailSender;
 import com.qiniu.storage.Configuration;
 import com.qiniu.util.Auth;
@@ -39,9 +39,6 @@ public class Main {
         String SMTPHost = config.getParamValue("smtp-host");
         String recipientAddress = config.getParamValue("recipient-address");
         EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
-        String path = "log.txt";
-        File file = new File(path);
-        emailSender.setLogFile(file);
 
         // 告警时间单位间隔
         int seconds = 60 * 1000;
@@ -49,7 +46,7 @@ public class Main {
         int interval = 30 * seconds;
         int count = 0;
         Timer timer = new Timer();
-        timer.schedule(new LogCleanTask(emailSender, path), 3 * 24 * 60 * seconds);
+        timer.schedule(new LogRegisterTask(emailSender, "log.txt"), 3 * 24 * 60 * seconds);
 
         String accessKey = config.getParamValue("ak");
         String secretKey = config.getParamValue("sk");
