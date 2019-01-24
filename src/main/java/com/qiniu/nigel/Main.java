@@ -39,6 +39,9 @@ public class Main {
         String SMTPHost = config.getParamValue("smtp-host");
         String recipientAddress = config.getParamValue("recipient-address");
         EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
+        for (String address : recipientAddress.split(",")) {
+            emailSender.addRecipient(address);
+        }
 
         // 告警时间单位间隔
         int seconds = 60 * 1000;
@@ -59,28 +62,24 @@ public class Main {
             if (urlSurplusDay == 0) {
                 count = 0;
                 interval = 60 * seconds;
-                emailSender.addRecipient(recipientAddress);
                 emailSender.addRecipient("tswork@qiniu.com");
                 emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
             } else if (urlSurplusDay < 100) {
                 count++;
                 interval = seconds;
                 if (count <= 5 || count % 30 == 0) {
-                    emailSender.addRecipient(recipientAddress);
                     emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 500) {
                 count++;
                 interval = 2 * seconds;
                 if (count <= 5 || count % 15 == 0) {
-                    emailSender.addRecipient(recipientAddress);
                     emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 1000) {
                 count++;
                 interval = 3 * seconds;
                 if (count <= 5 || count % 10 == 0) {
-                    emailSender.addRecipient(recipientAddress);
                     emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 10000 ) {
