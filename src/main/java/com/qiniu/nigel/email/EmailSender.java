@@ -55,13 +55,18 @@ public class EmailSender {
         message.addRecipient(RecipientType.TO, new InternetAddress(emailAddress));
     }
 
+    synchronized public File getLogFile() {
+        return logFile;
+    }
+
     public void setLogFile(File logFile) {
+        getLogFile();
         this.logFile = logFile;
     }
 
     public void emailText(String subject, String content) throws MessagingException, FileNotFoundException {
         //设置输出调试信息
-        PrintStream printStream = new PrintStream(logFile);
+        PrintStream printStream = new PrintStream(getLogFile());
         session.setDebugOut(printStream);
         session.setDebug(true);
         //防止成为垃圾邮件

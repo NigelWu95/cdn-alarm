@@ -3,6 +3,7 @@ package com.qiniu.nigel;
 import com.qiniu.nigel.cdn.QuotaAndSurplus;
 import com.qiniu.nigel.cdn.Refresh;
 import com.qiniu.nigel.common.Config;
+import com.qiniu.nigel.common.LogCleanTask;
 import com.qiniu.nigel.email.EmailSender;
 import com.qiniu.storage.Configuration;
 import com.qiniu.util.Auth;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class Main {
 
@@ -37,8 +39,17 @@ public class Main {
         String SMTPHost = config.getParamValue("smtp-host");
         String recipientAddress = config.getParamValue("recipient-address");
         EmailSender emailSender = new EmailSender(SMTPHost, senderAddress, senderAccount, senderPassword);
-        File file = new File("log.txt");
+        String path = "log.txt";
+        File file = new File(path);
         emailSender.setLogFile(file);
+
+        // 告警时间单位间隔
+        int seconds = 60 * 1000;
+        // 告警时间间隔初始值，间隔 10 分钟查询一次
+        int interval = 30 * seconds;
+        int count = 0;
+        Timer timer = new Timer();
+        timer.schedule(new LogCleanTask(emailSender, path), 3 * 24 * 60 * seconds);
 
         String accessKey = config.getParamValue("ak");
         String secretKey = config.getParamValue("sk");
@@ -46,11 +57,6 @@ public class Main {
         Refresh refresh = new Refresh(new Configuration(), auth);
         QuotaAndSurplus quotaAndSurplus = refresh.queryQuotaAndSurplus();
         int urlSurplusDay = quotaAndSurplus.urlSurplusDay;
-        // 告警时间单位间隔
-        int seconds = 60 * 1000;
-        // 告警时间间隔初始值，间隔 10 分钟查询一次
-        int interval = 30 * seconds;
-        int count = 0;
 
         while (true) {
             if (urlSurplusDay == 0) {
