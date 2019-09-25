@@ -63,24 +63,24 @@ public class Main {
                 count = 0;
                 interval = 60 * seconds;
                 emailSender.addRecipient("tswork@qiniu.com");
-                emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
             } else if (urlSurplusDay < 100) {
                 count++;
                 interval = seconds;
                 if (count <= 5 || count % 30 == 0) {
-                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 500) {
                 count++;
                 interval = 2 * seconds;
                 if (count <= 5 || count % 15 == 0) {
-                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 1000) {
                 count++;
                 interval = 3 * seconds;
                 if (count <= 5 || count % 10 == 0) {
-                    emailSender.emailText("七牛 CDN 刷新额度预警", "美篇 URL 刷新额度剩余：" + urlSurplusDay);
+                    emailSender.emailText("七牛 CDN 刷新额度预警", "URL 刷新额度剩余：" + urlSurplusDay);
                 }
             } else if (urlSurplusDay < 10000 ) {
                 count = 0;
