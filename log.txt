@@ -22,7 +22,7 @@ DEBUG SMTP: Found extension "AUTH=LOGIN", arg ""
 DEBUG SMTP: Found extension "MAILCOMPRESS", arg ""
 DEBUG SMTP: Found extension "8BITMIME", arg ""
 DEBUG SMTP: protocolConnect login, host=smtp.exmail.qq.com, user=wubingheng@qiniu.com, password=<non-null>
-DEBUG SMTP: Attempt to authenticate using mechanisms: LOGIN PLAIN DIGEST-MD5 NTLM XOAUTH2 
+DEBUG SMTP: Attempt to authenticate using mechanisms: LOGIN PLAIN DIGEST-MD5 NTLM XOAUTH2
 DEBUG SMTP: Using mechanism LOGIN
 DEBUG SMTP: AUTH LOGIN command trace suppressed
 DEBUG SMTP: AUTH LOGIN succeeded
@@ -61,9 +61,9 @@ Mailer: Foxmail for Mac version 1.2.14017
 Mailer: Foxmail for Mac version 1.2.14017
 Mailer: Foxmail for Mac version 1.2.14017
 
-美篇 URL 刷新额度剩余：500
+URL 刷新额度剩余：500
 .
-250 Ok: queued as 
+250 Ok: queued as
 DEBUG SMTP: message successfully delivered to mail server
 QUIT
 221 Bye
